@@ -1,0 +1,29 @@
+{
+   "name": "mintbubblex",
+   "version": "1.0.0",
+   "description": "verification for Aethen's Social Area 🍭",
+   "main": "index.js",
+   "type": "module",
+   "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1"
+   },
+   "repository": {
+      "type": "git",
+      "url": "git+https://github.com/magicalbunny31/discord-mintbubblex-bot.git"
+   },
+   "author": "magicalbunny31",
+   "bugs": {
+      "url": "https://github.com/magicalbunny31/discord-mintbubblex-bot/issues"
+   },
+   "homepage": "https://github.com/magicalbunny31/discord-mintbubblex-bot#readme",
+   "dependencies": {
+      "@magicalbunny31/awesome-utility-stuff": "github:magicalbunny31/awesome-utility-stuff",
+      "dayjs": "^1.11.5",
+      "discord.js": "^14.7.0-dev.1667822677-ff85481.0",
+      "dotenv": "^16.0.1",
+      "node-cache": "^5.1.2"
+   },
+   "overrides": {
+      "@discordjs/builders": "1.4.0-dev.1667347887-5152abf.0"
+   }
+}
