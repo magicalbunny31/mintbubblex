@@ -162,6 +162,9 @@ export default async interaction => {
                || `\u200b`,
             inline: true
          })
+         .setFooter({
+            text: `❗ All prices are estimations.`
+         })
    ];
 
 
