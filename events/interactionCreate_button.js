@@ -13,11 +13,6 @@ export default async interaction => {
       return;
 
 
-   // this interaction didn't come from Aethen's Social Area
-   if (interaction.guild.id !== process.env.GUILD_FOXIE)
-      return;
-
-
    // get this command's file
    const file = await import(`../interactions/button/${interaction.customId.split(`:`)[0]}.js`);
 
