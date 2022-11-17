@@ -24,6 +24,6 @@
       "node-cache": "^5.1.2"
    },
    "overrides": {
-      "@discordjs/builders": "1.4.0-dev.1667347887-5152abf.0"
+      "@discordjs/builders": "1.4.0-dev.1668686650-ff85481.0"
    }
 }
