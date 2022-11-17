@@ -22,12 +22,16 @@ export default async interaction => {
       components[selectMenuIndex].components[0].options[index].default = true;
 
 
-   // enable select menus based on what feature was selected
-   if (feature === `base-style`)
+   // edit select menus based on what feature was selected
+   if (feature === `base-style`) {
+      components[2].components[0].data.placeholder = `Select a position...`;
       components[2].components[0].data.disabled = false;
+   };
 
-   if (feature === `position`)
+   if (feature === `position`) {
+      components[3].components[0].data.placeholder = `Select extras...`;
       components[3].components[0].data.disabled = false;
+   };
 
 
    // add/remove options from the select menus depending on what was chosen

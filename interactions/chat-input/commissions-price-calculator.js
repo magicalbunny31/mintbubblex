@@ -139,6 +139,6 @@ export default async interaction => {
    return await interaction.reply({
       embeds,
       components,
-      ephemeral: true // TODO
+      ephemeral: true
    });
 };
