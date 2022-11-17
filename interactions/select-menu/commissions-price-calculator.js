@@ -111,7 +111,7 @@ export default async interaction => {
    if (extras.includes(`head-bust-animated-gif`))
       price += 5000;
 
-   if (characters > 1 && extras.includes(`head-bust-animated-gif`))
+   if ((characters > 1 || baseStyle === `shade` || position !== `head-bust`) && extras.includes(`head-bust-animated-gif`))
       price -= 5000;
 
 
