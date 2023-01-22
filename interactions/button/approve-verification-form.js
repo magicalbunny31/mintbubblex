@@ -80,6 +80,18 @@ export default async interaction => {
    };
 
 
-   // delete the interaction's reply
-   return await interaction.deleteReply();
+   // edit the verification form's embed
+   return await interaction.editReply({
+      embeds: [
+         new Discord.EmbedBuilder(interaction.message.embeds[0].data)
+            .setFooter({
+               text: `✅ Approved by ${interaction.user.tag}`,
+               iconURL: interaction.user.displayAvatarURL({
+                  extension: `png`,
+                  size: 4096
+               })
+            })
+      ],
+      components: []
+   });
 };

@@ -64,7 +64,9 @@ export default async interaction => {
             }),
          new Discord.EmbedBuilder()
             .setColor(colours.red)
-            .setDescription(reason)
+            .setDescription(
+               Discord.codeBlock(reason)
+            )
       ];
 
       const components = [
@@ -87,6 +89,23 @@ export default async interaction => {
    };
 
 
-   // delete the interaction's reply
-   return await interaction.deleteReply();
+   // edit the verification form's embed
+   return await interaction.editReply({
+      embeds: [
+         new Discord.EmbedBuilder(interaction.message.embeds[0].data)
+            .setFooter({
+               text: `❌ Denied by ${interaction.user.tag}`,
+               iconURL: interaction.user.displayAvatarURL({
+                  extension: `png`,
+                  size: 4096
+               })
+            }),
+         new Discord.EmbedBuilder()
+            .setColor(colours.red)
+            .setDescription(
+               Discord.codeBlock(reason)
+            )
+      ],
+      components: []
+   });
 };
