@@ -50,7 +50,7 @@ export default async interaction => {
    try {
       const embeds = [
          new Discord.EmbedBuilder()
-            .setColor(message.embeds[0].color)
+            .setColor(interaction.message.embeds[0].color)
             .setDescription(strip`
                📝 Your Verification Form was denied.
                💬 You can view the reason for the denial below.
