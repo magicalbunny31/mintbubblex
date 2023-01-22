@@ -1,6 +1,6 @@
 import Discord from "discord.js";
 
-import { strip } from "@magicalbunny31/awesome-utility-stuff";
+import { strip, wait } from "@magicalbunny31/awesome-utility-stuff";
 
 import cache from "../../data/cache.js";
 
