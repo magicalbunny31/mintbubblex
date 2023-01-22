@@ -1,6 +1,6 @@
 {
    "name": "mintbubblex",
-   "version": "1.0.0",
+   "version": "1.0.5",
    "description": "verification for Aethen's Social Area 🍭",
    "main": "index.js",
    "type": "module",
@@ -19,11 +19,8 @@
    "dependencies": {
       "@magicalbunny31/awesome-utility-stuff": "github:magicalbunny31/awesome-utility-stuff",
       "dayjs": "^1.11.5",
-      "discord.js": "^14.7.0-dev.1667822677-ff85481.0",
+      "discord.js": "^14.7.1",
       "dotenv": "^16.0.1",
       "node-cache": "^5.1.2"
-   },
-   "overrides": {
-      "@discordjs/builders": "1.4.0-dev.1668686650-ff85481.0"
    }
 }

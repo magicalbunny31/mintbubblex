@@ -46,7 +46,7 @@ export default async interaction => {
    try {
       const embeds = [
          new Discord.EmbedBuilder()
-            .setColor(message.embeds[0].color)
+            .setColor(interaction.message.embeds[0].color)
             .setDescription(strip`
                📝 Your Verification Form was approved!
                💬 Check out the server by pressing the button below.
