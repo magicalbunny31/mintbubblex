@@ -3,6 +3,7 @@ export const once = false;
 
 
 import Discord from "discord.js";
+import { wait } from "@magicalbunny31/awesome-utility-stuff";
 
 /**
  * @param {Discord.GuildMember} member
