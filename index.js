@@ -1,13 +1,13 @@
 /**
  * MintBubblex 🍭
  *
- * magicalbunny31 : 2022
+ * magicalbunny31 : 2022 - 2023
  * https://nuzzles.dev
  */
 
 
-// some awesome utilities that i pretty much need or else my code will suck 🐾
-import { sendBotError } from "@magicalbunny31/awesome-utility-stuff";
+// utilities for interacting with fennec 💻
+import { Client } from "@magicalbunny31/fennec-utilities";
 
 
 // filesystem
@@ -31,7 +31,8 @@ const client = new Discord.Client({
 
    intents: [
       Discord.GatewayIntentBits.Guilds,
-      Discord.GatewayIntentBits.GuildMembers
+      Discord.GatewayIntentBits.GuildMembers,
+      Discord.GatewayIntentBits.GuildMessages
    ]
 });
 
@@ -45,20 +46,47 @@ for (const file of events) {
 };
 
 
-// send errors to an error webhook
-process.on("uncaughtException", async (error, origin) => {
-   await sendBotError(
-      `uncaughtException`,
-      {
-         url: process.env.WEBHOOK_ERRORS
-      },
-      error
-   );
-
-   console.error(error);
-   process.exit(1);
-});
-
-
 // log in to discord
 await client.login(process.env.TOKEN);
+
+
+// set-up fennec-utilities
+const fennecGuild = await client.guilds.fetch(process.env.GUILD_BOT_LOGS);
+const fennecMember = await fennecGuild.members.fetch(client.user);
+
+client.fennec = new Client({
+   avatarURL: client.user.avatarURL({
+      extension: `png`,
+      size: 4096
+   }),
+   colour: Discord.Colors.Blue,
+   formattedName: fennecMember.displayName,
+   firestore: {
+      clientEmail: process.env.FENNEC_GCP_CLIENT_EMAIL,
+      privateKey:  process.env.FENNEC_GCP_PRIVATE_KEY,
+      projectId:   process.env.FENNEC_GCP_PROJECT_ID
+   },
+   id: process.env.FENNEC_ID,
+   threadId: process.env.FENNEC_THREAD,
+   webhook: {
+      url: process.env.FENNEC_WEBHOOK
+   }
+});
+
+client.fennec.updater(client);
+
+client.blacklist = await client.fennec.getGlobalBlacklist();
+setInterval(async () => client.blacklist = await client.fennec.getGlobalBlacklist(), 3.6e+6);
+
+
+// an uncaughtException occurred, send/log it before quitting
+process.on("uncaughtException", async (error, origin) => {
+   try {
+      return await client.fennec.sendError(error, Math.floor(Date.now() / 1000), origin);
+
+   } finally {
+      console.warn(`error in uncaught exception! see below~`);
+      console.error(error.stack);
+      return process.exit(1);
+   };
+});

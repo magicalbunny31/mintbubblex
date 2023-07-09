@@ -18,8 +18,9 @@
    "homepage": "https://github.com/magicalbunny31/discord-mintbubblex-bot#readme",
    "dependencies": {
       "@magicalbunny31/awesome-utility-stuff": "github:magicalbunny31/awesome-utility-stuff",
+      "@magicalbunny31/fennec-utilities": "github:magicalbunny31/fennec-utilities",
       "dayjs": "^1.11.5",
-      "discord.js": "^14.7.1",
+      "discord.js": "^14.9.0",
       "dotenv": "^16.0.1",
       "node-cache": "^5.1.2"
    }
