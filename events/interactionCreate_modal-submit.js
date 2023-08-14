@@ -14,7 +14,7 @@ export default async interaction => {
 
 
    // this user is in the global blacklist
-   if (interaction.client.blacklist.includes(interaction.user.id))
+   if (interaction.client.blacklist?.includes(interaction.user.id))
       return await interaction.client.fennec.warnBlacklisted(interaction, process.env.SUPPORT_GUILD);
 
 
