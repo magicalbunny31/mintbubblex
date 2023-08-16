@@ -11,7 +11,7 @@ import { Client } from "@magicalbunny31/fennec-utilities";
 
 
 // filesystem
-import { readdir } from "fs/promises";
+import fs from "fs/promises";
 
 
 // load .env
@@ -24,8 +24,8 @@ import Discord from "discord.js";
 const client = new Discord.Client({
    presence: {
       activities: [{
-         type: Discord.ActivityType.Watching,
-         name: `over the crew`
+         name: `over the crew`,
+         type: Discord.ActivityType.Watching
       }]
    },
 
@@ -35,15 +35,6 @@ const client = new Discord.Client({
       Discord.GatewayIntentBits.GuildMessages
    ]
 });
-
-
-// listen to events
-const events = await readdir(`./events`);
-for (const file of events) {
-   const event = await import(`./events/${file}`);
-   if (!event.once) client.on  (event.name, (...args) => event.default(...args));
-   else             client.once(event.name, (...args) => event.default(...args));
-};
 
 
 // log in to discord
@@ -67,6 +58,7 @@ client.fennec = new Client({
       projectId:   process.env.FENNEC_GCP_PROJECT_ID
    },
    id: process.env.FENNEC_ID,
+   supportGuild: process.env.SUPPORT_GUILD,
    threadId: process.env.FENNEC_THREAD,
    webhook: {
       url: process.env.FENNEC_WEBHOOK
@@ -77,6 +69,50 @@ client.fennec.updater(client);
 
 client.blacklist = await client.fennec.getGlobalBlacklist();
 setInterval(async () => client.blacklist = await client.fennec.getGlobalBlacklist(), 3.6e+6);
+
+
+// set application commands
+const commands = [];
+
+for (const file of await fs.readdir(`./interactions/chat-input`))
+   commands.push((await import(`./interactions/chat-input/${file}`)).data);
+
+await client.application.commands.set(commands, process.env.GUILD_FOXIE);
+
+
+// listen to events
+const events = await fs.readdir(`./events`);
+for (const file of events) {
+   const event = await import(`./events/${file}`);
+   if (!event.once) client.on  (event.name, (...args) => event.default(...args));
+   else             client.once(event.name, (...args) => event.default(...args));
+};
+
+
+// statuses
+setInterval(async () => {
+   // offline-soon or maintenance
+   const fennecStatus = await client.fennec.getStatus();
+   if ([ `offline-soon`, `maintenance` ].includes(fennecStatus))
+      return client.user.setPresence({
+         status: Discord.PresenceUpdateStatus.DoNotDisturb,
+         activities: [{
+            name:  `${fennecStatus === `offline-soon` ? `i'll be offline soon~` : `currently in maintenance!`} 🔧`,
+            // state: `${fennecStatus === `offline-soon` ? `i'll be offline soon~` : `currently in maintenance!`} 🔧`,
+            // type:  Discord.ActivityType.Custom
+            type: Discord.ActivityType.Playing
+         }]
+      });
+
+   // normal statuses
+   client.user.setPresence({
+      status: Discord.PresenceUpdateStatus.Online,
+      activities: [{
+         type: Discord.ActivityType.Watching,
+         name: `over the crew`
+      }]
+   });
+}, 1.8e+6); // 30 minutes
 
 
 // an uncaughtException occurred, send/log it before quitting
@@ -90,3 +126,7 @@ process.on("uncaughtException", async (error, origin) => {
       return process.exit(1);
    };
 });
+
+
+// log to console once everything is done
+console.log(`@${client.user.username} 🍭 is ready~`);

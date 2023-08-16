@@ -13,15 +13,21 @@ export default async interaction => {
       return;
 
 
+   // fennec-utilities
+   const isBlacklisted = interaction.client.blacklist?.includes(interaction.user.id);
+
+   const developers = JSON.parse(process.env.DEVELOPERS.replaceAll(`'`, `"`));
+   const isDeveloper = developers.includes(interaction.user.id);
+
+
    // this user is in the global blacklist
-   if (interaction.client.blacklist?.includes(interaction.user.id))
-      return await interaction.client.fennec.warnBlacklisted(interaction, process.env.SUPPORT_GUILD);
+   if (isBlacklisted)
+      return await interaction.client.fennec.notify(interaction, `blacklist`);
 
 
    // maintenance
-   if (await interaction.client.fennec.getStatus() === `maintenance`)
-      if (!JSON.parse(process.env.DEVELOPERS.replaceAll(`'`, `"`)).includes(interaction.user.id))
-         return await interaction.client.fennec.warnMaintenance(interaction);
+   if (await interaction.client.fennec.getStatus() === `maintenance` && !isDeveloper)
+      return await interaction.client.fennec.notify(interaction, `maintenance`);
 
 
    // get this command's file
@@ -32,20 +38,24 @@ export default async interaction => {
       // run the file
       await file.default(interaction);
 
-      // offline soon
-      if (await interaction.client.fennec.getStatus() === `offline-soon`)
-         if (!JSON.parse(process.env.DEVELOPERS.replaceAll(`'`, `"`)).includes(interaction.user.id))
-            await interaction.client.fennec.warnOfflineSoon(interaction);
-
 
    } catch (error) {
       // an error occurred
       try {
          await interaction.client.fennec.respondToInteractionWithError(interaction);
-         return await interaction.client.fennec.sendError(error, Math.floor(interaction.createdTimestamp / 1000), interaction);
+         await interaction.client.fennec.sendError(error, Math.floor(interaction.createdTimestamp / 1000), interaction);
 
       } finally {
-         return console.error(error.stack);
+         console.error(error.stack);
       };
+   };
+
+
+   // offline soon
+   const hasSeenOfflineSoonNotification = await interaction.client.fennec.hasSeenNotification(interaction.user, `offline-soon`);
+
+   if (await interaction.client.fennec.getStatus() === `offline-soon` && !hasSeenOfflineSoonNotification) {
+      await interaction.client.fennec.notify(interaction, `offline-soon`);
+      await interaction.client.fennec.setSeenNotification(interaction.user, `offline-soon`);
    };
 };
