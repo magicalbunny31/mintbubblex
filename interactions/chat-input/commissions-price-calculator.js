@@ -1,6 +1,6 @@
 export const data = new Discord.SlashCommandBuilder()
    .setName(`commissions-price-calculator`)
-   .setDescription(`Calculate the price of a commission.`);
+   .setDescription(`Calculate the price of a commission`);
 
 
 import Discord from "discord.js";

@@ -42,7 +42,7 @@ await client.login(process.env.TOKEN);
 
 
 // set-up fennec-utilities
-const fennecGuild = await client.guilds.fetch(process.env.GUILD_BOT_LOGS);
+const fennecGuild = await client.guilds.fetch(process.env.GUILD_APPLICATION_STATUS);
 const fennecMember = await fennecGuild.members.fetch(client.user);
 
 client.fennec = new Client({
@@ -97,10 +97,8 @@ setInterval(async () => {
       return client.user.setPresence({
          status: Discord.PresenceUpdateStatus.DoNotDisturb,
          activities: [{
-            name:  `${fennecStatus === `offline-soon` ? `i'll be offline soon~` : `currently in maintenance!`} 🔧`,
-            // state: `${fennecStatus === `offline-soon` ? `i'll be offline soon~` : `currently in maintenance!`} 🔧`,
-            // type:  Discord.ActivityType.Custom
-            type: Discord.ActivityType.Playing
+            name: `${fennecStatus === `offline-soon` ? `i'll be offline soon~` : `currently in maintenance!`} 🔧`,
+            type: Discord.ActivityType.Custom
          }]
       });
 
@@ -112,7 +110,7 @@ setInterval(async () => {
          name: `over the crew`
       }]
    });
-}, 1.8e+6); // 30 minutes
+}, 600000); // 10 minutes
 
 
 // an uncaughtException occurred, send/log it before quitting
