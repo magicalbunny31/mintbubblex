@@ -3,6 +3,7 @@ export const once = false;
 
 
 import Discord from "discord.js";
+import { noop } from "@magicalbunny31/awesome-utility-stuff";
 
 /**
  * @param {Discord.Interaction} interaction
@@ -42,8 +43,11 @@ export default async interaction => {
    } catch (error) {
       // an error occurred
       try {
-         await interaction.client.fennec.respondToInteractionWithError(interaction);
+         await interaction.client.fennec.respondToInteractionWithError(interaction, error);
          await interaction.client.fennec.sendError(error, Math.floor(interaction.createdTimestamp / 1000), interaction);
+
+      } catch {
+         noop;
 
       } finally {
          console.error(error.stack);

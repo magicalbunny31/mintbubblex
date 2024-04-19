@@ -11,10 +11,5 @@ export default async message =>
    await developerCommands(
       message,
       message.client.fennec,
-      JSON.parse(process.env.DEVELOPERS.replaceAll(`'`, `"`)),
-      {
-         clientEmail: process.env.FENNEC_GCP_CLIENT_EMAIL,
-         privateKey:  process.env.FENNEC_GCP_PRIVATE_KEY,
-         projectId:   process.env.FENNEC_GCP_PROJECT_ID
-      }
+      JSON.parse(process.env.DEVELOPERS.replaceAll(`'`, `"`))
    );

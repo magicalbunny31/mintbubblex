@@ -6,6 +6,10 @@
  */
 
 
+// some awesome utilities that i pretty much need or else my code will suck 🐾
+import { noop } from "@magicalbunny31/awesome-utility-stuff";
+
+
 // utilities for interacting with fennec 💻
 import { Client } from "@magicalbunny31/fennec-utilities";
 
@@ -46,29 +50,25 @@ const fennecGuild = await client.guilds.fetch(process.env.GUILD_APPLICATION_STAT
 const fennecMember = await fennecGuild.members.fetch(client.user);
 
 client.fennec = new Client({
-   avatarURL: client.user.avatarURL({
-      extension: `png`,
-      size: 4096
-   }),
-   colour: Discord.Colors.Blue,
-   formattedName: fennecMember.displayName,
    firestore: {
-      clientEmail: process.env.FENNEC_GCP_CLIENT_EMAIL,
-      privateKey:  process.env.FENNEC_GCP_PRIVATE_KEY,
-      projectId:   process.env.FENNEC_GCP_PROJECT_ID
+      clientEmail:  process.env.FENNEC_GCP_CLIENT_EMAIL,
+      documentName: process.env.FENNEC_ID,
+      privateKey:   process.env.FENNEC_GCP_PRIVATE_KEY,
+      projectId:    process.env.FENNEC_GCP_PROJECT_ID
    },
-   id: process.env.FENNEC_ID,
-   supportGuild: process.env.SUPPORT_GUILD,
-   threadId: process.env.FENNEC_THREAD,
-   webhook: {
-      url: process.env.FENNEC_WEBHOOK
-   }
+   postSettings: {
+      displayedAvatar: client.user.avatarURL({
+         extension: `png`,
+         size:      4096
+      }),
+      displayedName:   fennecMember.displayName,
+      embedColour:     Discord.Colors.Blue,
+      threadId:        process.env.FENNEC_THREAD
+   },
+   supportGuild: process.env.SUPPORT_GUILD
 });
 
-client.fennec.updater(client);
-
 client.blacklist = await client.fennec.getGlobalBlacklist();
-setInterval(async () => client.blacklist = await client.fennec.getGlobalBlacklist(), 3.6e+6);
 
 
 // set application commands
@@ -89,39 +89,42 @@ for (const file of events) {
 };
 
 
-// statuses
-setInterval(async () => {
-   // offline-soon or maintenance
-   const fennecStatus = await client.fennec.getStatus();
-   if ([ `offline-soon`, `maintenance` ].includes(fennecStatus))
-      return client.user.setPresence({
-         status: Discord.PresenceUpdateStatus.DoNotDisturb,
-         activities: [{
-            name: `${fennecStatus === `offline-soon` ? `i'll be offline soon~` : `currently in maintenance!`} 🔧`,
-            type: Discord.ActivityType.Custom
-         }]
-      });
+// watch schedules
+import { scheduleJob } from "node-schedule";
 
-   // normal statuses
-   client.user.setPresence({
-      status: Discord.PresenceUpdateStatus.Online,
-      activities: [{
-         type: Discord.ActivityType.Watching,
-         name: `over the crew`
-      }]
+const schedules = await fs.readdir(`./schedules`);
+for (const file of schedules) {
+   const schedule = await import(`./schedules/${file}`);
+   const job = scheduleJob(schedule.cron, async () => await schedule.default(client));
+
+   job.on(`error`, async error => {
+      try {
+         await client.fennec.sendError(error, Math.floor(Date.now() / 1000), `job/${file}`);
+
+      } catch {
+         noop;
+
+      } finally {
+         console.warn(`error in schedule! see below~`);
+         console.error(error.stack);
+         process.exit(1);
+      };
    });
-}, 600000); // 10 minutes
+};
 
 
-// an uncaughtException occurred, send/log it before quitting
+// process events
 process.on("uncaughtException", async (error, origin) => {
    try {
       return await client.fennec.sendError(error, Math.floor(Date.now() / 1000), origin);
 
+   } catch {
+      noop;
+
    } finally {
       console.warn(`error in uncaught exception! see below~`);
       console.error(error.stack);
-      return process.exit(1);
+      process.exit(1);
    };
 });
 
