@@ -106,7 +106,7 @@ export default async interaction => {
       price += 40;
 
    if (extras.includes(`complicated-background`))
-      price += 100;
+      price += 400;
 
    if (extras.includes(`head-bust-animated-gif`))
       price += 5000;
