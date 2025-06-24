@@ -1523,7 +1523,6 @@ export default class Slendyblox {
       const interactionCollector = this.#interaction.channel.createMessageComponentCollector({
          componentType: Discord.ComponentType.Button,
          filter: i => i.customId === this.#interaction.id,
-         max: 1,
          time
       });
 
@@ -1582,6 +1581,11 @@ export default class Slendyblox {
 
       // interaction collected
       interactionCollector.on(`collect`, async buttonInteraction => {
+         // this isn't the expected user
+         if (this.#interaction.user.id !== buttonInteraction.user.id)
+            return void await respondToWrongUserMessageComponentInteraction(buttonInteraction, this.#interaction.user, buttonInteraction.user);
+
+
          // defer the interaction
          await buttonInteraction.update({
             components: deferComponents(buttonInteraction.customId, buttonInteraction.message.components)
