@@ -489,7 +489,11 @@ export default class CommissionsPriceCalculator {
          components,
          files: [],
          flags: [
-            ...(this.#hidden || !(this.#respondedToInteraction && this.#isSameCommandUser()))
+            ...(
+               this.#interaction.isChatInputCommand()
+                  ? this.#hidden
+                  : !(this.#respondedToInteraction && this.#isSameCommandUser())
+            )
                ? [ Discord.MessageFlags.Ephemeral ]
                : []
          ]
