@@ -1,28 +1,50 @@
 {
-   "name": "discord-mintbubblex-bot",
-   "version": "1.1.7",
-   "description": "verification for Aethen's Social Area 🍭",
-   "main": "index.js",
+   "name": "mintbubblex",
+   "version": "2.0.0",
+   "description": "🍭 verification for Aethen's Social Area",
+   "main": "./src/index.js",
    "type": "module",
    "scripts": {
-      "test": "echo \"Error: no test specified\" && exit 1"
+      "dev": "node ./src/index.js",
+      "start": "node ./src/pm2/start.js",
+      "stop": "node ./src/pm2/stop.js",
+      "restart": "node ./src/pm2/restart.js",
+      "delete": "node ./src/pm2/delete.js",
+      "dotenvx-precommit": "dotenvx ext precommit",
+      "dotenvx-encrypt-env": "dotenvx encrypt -f ./src/.env -fk ./src/.env.keys",
+      "dotenvx-decrypt-env": "dotenvx decrypt -f ./src/.env -fk ./src/.env.keys"
    },
    "repository": {
       "type": "git",
-      "url": "git+https://github.com/magicalbunny31/discord-mintbubblex-bot.git"
+      "url": "git+https://github.com/magicalbunny31/mintbubblex.git"
    },
    "author": "magicalbunny31",
    "bugs": {
-      "url": "https://github.com/magicalbunny31/discord-mintbubblex-bot/issues"
+      "url": "https://github.com/magicalbunny31/mintbubblex/issues"
    },
-   "homepage": "https://github.com/magicalbunny31/discord-mintbubblex-bot#readme",
+   "homepage": "https://nuzzles.dev/dev/mintbubblex",
+   "license": "MIT",
+   "engines": {
+      "node": ">=22.12.0"
+   },
    "dependencies": {
-      "@magicalbunny31/awesome-utility-stuff": "github:magicalbunny31/awesome-utility-stuff",
+      "@dotenvx/dotenvx": "^1.45.1",
+      "@google-cloud/firestore": "^7.11.1",
+      "@google-cloud/storage": "^7.16.0",
       "@magicalbunny31/fennec-utilities": "github:magicalbunny31/fennec-utilities",
-      "dayjs": "^1.11.10",
-      "discord.js": "^14.14.1",
-      "dotenv": "^16.3.1",
+      "@magicalbunny31/pawesome-utility-stuffs": "github:magicalbunny31/pawesome-utility-stuffs",
+      "better-logging": "^5.0.0",
+      "chalk": "^5.4.1",
+      "dayjs": "^1.11.13",
+      "discord.js": "^14.20.0",
+      "dotenv": "^16.5.0",
+      "file-type": "^21.0.0",
       "node-cache": "^5.1.2",
-      "node-schedule": "^2.1.1"
+      "node-schedule": "^2.1.1",
+      "pm2": "^6.0.8"
+   },
+   "devDependencies": {
+      "eslint": "^9.29.0",
+      "globals": "^16.2.0"
    }
 }

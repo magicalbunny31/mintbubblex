@@ -1,9 +1,19 @@
 # 💻 vscode
-.vscode/
-*.code-workspace
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
 
-# 📜 .env
-.env
+# 🔐 secrets
+.env*
+.private*
+!.env
+!.env.sample
+
+# 📜 logs
+logs/
 
 # 📦 dependencies
 node_modules/
