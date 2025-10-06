@@ -1,18 +1,17 @@
 {
    "name": "mintbubblex",
-   "version": "2.0.0",
+   "version": "2.0.1",
    "description": "🍭 verification for Aethen's Social Area",
    "main": "./src/index.js",
    "type": "module",
    "scripts": {
+      "start": "node ./src/index.js",
       "dev": "node ./src/index.js",
-      "start": "node ./src/pm2/start.js",
-      "stop": "node ./src/pm2/stop.js",
-      "restart": "node ./src/pm2/restart.js",
-      "delete": "node ./src/pm2/delete.js",
-      "dotenvx-precommit": "dotenvx ext precommit",
-      "dotenvx-encrypt-env": "dotenvx encrypt -f ./src/.env -fk ./src/.env.keys",
-      "dotenvx-decrypt-env": "dotenvx decrypt -f ./src/.env -fk ./src/.env.keys"
+      "docker:up": "docker compose up --build",
+      "docker:down": "docker compose down --remove-orphans --rmi all --volumes",
+      "dotenvx:precommit": "dotenvx ext precommit",
+      "dotenvx:encrypt": "dotenvx encrypt -f ./src/.env -fk ./src/.env.keys",
+      "dotenvx:decrypt": "dotenvx decrypt -f ./src/.env -fk ./src/.env.keys"
    },
    "repository": {
       "type": "git",
@@ -28,23 +27,22 @@
       "node": ">=22.12.0"
    },
    "dependencies": {
-      "@dotenvx/dotenvx": "^1.45.1",
-      "@google-cloud/firestore": "^7.11.1",
-      "@google-cloud/storage": "^7.16.0",
+      "@dotenvx/dotenvx": "^1.51.0",
+      "@google-cloud/firestore": "^7.11.6",
+      "@google-cloud/storage": "^7.17.2",
       "@magicalbunny31/fennec-utilities": "github:magicalbunny31/fennec-utilities",
       "@magicalbunny31/pawesome-utility-stuffs": "github:magicalbunny31/pawesome-utility-stuffs",
       "better-logging": "^5.0.0",
-      "chalk": "^5.4.1",
-      "dayjs": "^1.11.13",
-      "discord.js": "^14.20.0",
-      "dotenv": "^16.5.0",
+      "chalk": "^5.6.2",
+      "dayjs": "^1.11.18",
+      "discord.js": "^14.22.1",
+      "dotenv": "^16.6.1",
       "file-type": "^21.0.0",
       "node-cache": "^5.1.2",
-      "node-schedule": "^2.1.1",
-      "pm2": "^6.0.8"
+      "node-schedule": "^2.1.1"
    },
    "devDependencies": {
-      "eslint": "^9.29.0",
-      "globals": "^16.2.0"
+      "eslint": "^9.37.0",
+      "globals": "^16.4.0"
    }
 }

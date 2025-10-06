@@ -1,0 +1,18 @@
+services:
+  mintbubblex:
+    container_name: mintbubblex
+    command: npm start -- --color
+    build:
+      context: .
+    labels:
+      - "com.fennec.app_type=discord"
+      - "com.fennec.app_name=mintbubblex"
+    volumes:
+      - /discord/mintbubblex/node_modules
+    environment:
+      - TZ=Europe/London
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 2m
+        max_attempts: 3
