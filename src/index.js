@@ -97,7 +97,7 @@ client.storage = new Storage({
 import { FennecClient } from "@magicalbunny31/fennec-utilities";
 
 client.fennec = new FennecClient({
-   fennecProcess: `fox-1`,
+   fennecProcess: `fox-0`,
    fennecUtilities: {
       baseUrl:       process.env.FENNEC_UTILITIES_URL,
       id:            `mintbubblex`,
